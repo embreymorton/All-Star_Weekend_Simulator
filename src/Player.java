@@ -8,12 +8,13 @@ public class Player {
     public enum PlayerType {
         SHOOTER, DUNKER, BOTH;
     }
+
     private PlayerType type;
 
-    public Player (String name, int rating, PlayerType type){
+    public Player(String name, int rating, PlayerType type) {
         this.name = name;
 
-        switch(type) {
+        switch (type) {
             case SHOOTER:
                 threeRating = rating;
                 this.type = PlayerType.SHOOTER;
@@ -25,7 +26,7 @@ public class Player {
         }
     }
 
-    public Player (String name, int threeRating, int dunkRating){
+    public Player(String name, int threeRating, int dunkRating) {
         this.name = name;
         this.dunkRating = dunkRating;
         this.threeRating = threeRating;
@@ -33,34 +34,36 @@ public class Player {
         type = PlayerType.BOTH;
     }
 
-    public String getName(){return name;}
+    public String getName() {
+        return name;
+    }
 
-    public int getDunkRating(){
+    public int getDunkRating() {
         return dunkRating;
     }
 
-    public int getThreeRating(){
+    public int getThreeRating() {
         return threeRating;
     }
 
-    public int getScore(){
+    public int getScore() {
         return score;
     }
 
-    public void setScore(int s){
+    public void setScore(int s) {
         score = s;
     }
 
-    public void addScore(int score){
+    public void addScore(int score) {
         this.score += score;
     }
 
-    public PlayerType getType(){
+    public PlayerType getType() {
         return type;
     }
 
 
-    public String toString(){
+    public String toString() {
         return name;
     }
 

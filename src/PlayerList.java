@@ -14,5 +14,4 @@ public class PlayerList {
     public static Player ben_simmons = new Player("Ben Simmons", 25, 80);
 
 
-
 }

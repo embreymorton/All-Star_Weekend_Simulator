@@ -2,12 +2,13 @@ import java.lang.Math;
 import java.util.PriorityQueue;
 
 public class ThreePointContest {
-
     private Player p1, p2, p3, p4, p5, p6, winner;
 
     private PriorityQueue<Player> players = new PriorityQueue<>(6, new PlayerComparator());
     private PriorityQueue<Player> secondRound = new PriorityQueue<>(3, new PlayerComparator());
     private PriorityQueue<Player> final3 = new PriorityQueue<>(3, new PlayerComparator());
+
+    private int randNum;
 
     public ThreePointContest (Player one, Player two, Player three, Player four, Player five, Player six){
         p1 = one; p2 = two; p3 = three; p4 = four; p5 = five; p6 = six;
@@ -22,9 +23,9 @@ public class ThreePointContest {
         }
     }
 
-    //Simulates a shot based on Player's rating
+    //Simulates a regular shot based on Player's rating
     private boolean madeShot(Player p, boolean inDepth){
-        int randNum = (int)(Math.random()*105 + 0);
+        randNum = (int)(Math.random()*130 + 0);
 
         if(inDepth) {
             if (p.getThreeRating() >= randNum) {
@@ -38,23 +39,82 @@ public class ThreePointContest {
             return true;
         }
         return false;
+    }
 
+    //Simulates a money ball shot (worth 2 points)
+    private boolean madeMoneyBall(Player p, boolean inDepth){
+        randNum = (int)(Math.random()*5 + 0);
+
+        if(inDepth) {
+            if (p.getThreeRating() >= randNum) {
+                System.out.print("M ");
+                return true;
+            }
+            System.out.print("X ");
+            return false;
+        }
+        if (p.getThreeRating() >= randNum) {
+            return true;
+        }
+        return false;
+    }
+
+    //Simulates a Mountain Dew shot (worth 3 points)
+    private boolean madeMountainDew(Player p, boolean inDepth){
+        randNum = (int)(Math.random()*200 + 0);
+
+        if(inDepth) {
+            if (p.getThreeRating() >= randNum) {
+                System.out.print("3 ");
+                return true;
+            }
+            System.out.print("X ");
+            return false;
+        }
+        if (p.getThreeRating() >= randNum) {
+            return true;
+        }
+        return false;
     }
 
     //Simulates 5 shots (4 Regular shots = 1 point each, 1 Money Ball shot = 2 points)
     private void simRack(Player p, boolean inDepth){
         for(int i = 0; i < 4; i++){
-            if(madeShot(p, inDepth)){p.addScore(1);};
+            if(madeShot(p, inDepth)){
+                p.addScore(1);
+            };
         }
-        if(madeShot(p, inDepth)){p.addScore(2);};
-        if(inDepth) System.out.println();
+        if(madeMoneyBall(p, inDepth)){p.addScore(2);};
+    }
+
+    //Simulates Rack with 5 Money Ball Shots
+    private void simMoneyBallRack(Player p, boolean inDepth){
+        for(int i = 0; i < 5; i++){
+            if(madeMoneyBall(p, inDepth)){p.addScore(2);};
+        }
     }
 
     //Simulates 5 Racks
     private void simTurn(Player p, boolean inDepth){
-        for(int i = 0; i < 5; i++) {
+        int mBallRack = (int)(Math.random()*4 + 1);
+
+        for(int i = 1; i <= 5; i++) {
+            if(i == mBallRack) {
+                simMoneyBallRack(p, inDepth);
+                if(i == 2 || i == 4){
+                    if(madeMountainDew(p, inDepth)){p.addScore(3);}
+                }
+                if(inDepth) System.out.println();
+                continue;
+            }
+
             simRack(p, inDepth);
+            if(i == 2 || i == 4){
+                if(madeMountainDew(p, inDepth)){p.addScore(3);}
+            }
+            if(inDepth) System.out.println();
         }
+
         System.out.print("Score:" + p.getScore());
         System.out.println();
     }
@@ -145,5 +205,6 @@ public class ThreePointContest {
     }
 
     public Player getWinner(){return winner;}
+
 
 }

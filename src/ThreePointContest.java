@@ -25,7 +25,7 @@ public class ThreePointContest {
 
     //Simulates a regular shot based on Player's rating
     private boolean madeShot(Player p, boolean inDepth){
-        randNum = (int)(Math.random()*130 + 0);
+        randNum = (int)(Math.random()*120);
 
         if(inDepth) {
             if (p.getThreeRating() >= randNum) {
@@ -43,7 +43,7 @@ public class ThreePointContest {
 
     //Simulates a money ball shot (worth 2 points)
     private boolean madeMoneyBall(Player p, boolean inDepth){
-        randNum = (int)(Math.random()*5 + 0);
+        randNum = (int)(Math.random()*135);
 
         if(inDepth) {
             if (p.getThreeRating() >= randNum) {
@@ -61,7 +61,7 @@ public class ThreePointContest {
 
     //Simulates a Mountain Dew shot (worth 3 points)
     private boolean madeMountainDew(Player p, boolean inDepth){
-        randNum = (int)(Math.random()*200 + 0);
+        randNum = (int)(Math.random()*200);
 
         if(inDepth) {
             if (p.getThreeRating() >= randNum) {

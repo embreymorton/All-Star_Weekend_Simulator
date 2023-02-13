@@ -1,7 +1,9 @@
 public class PlayerList {
 
+                                                //CURRENT PLAYERS
+
     //SHOOTERS
-    public static Player steph_curry = new Player("Stephen Curry", 99, Player.PlayerType.SHOOTER);
+    public static Player steph_curry = new Player("Stephen Curry", 100, Player.PlayerType.SHOOTER);
     public static Player klay_thompson = new Player("Klay Thompson", 95, Player.PlayerType.SHOOTER);
     public static Player damian_lillard = new Player("Damian Lillard", 93, Player.PlayerType.SHOOTER);
     public static Player buddy_hield = new Player("Buddy Hield", 92, Player.PlayerType.SHOOTER);
@@ -30,6 +32,16 @@ public class PlayerList {
     public static Player donovan_mitchell = new Player("Donovan Mitchell", 85, 92);
     public static Player lebron_james = new Player("LeBron James", 80, 90);
     public static Player mason_plumlee = new Player("Mason Plumlee", 70, 85);
+
+
+                                                //HISTORIC PLAYERS
+
+    //SHOOTERS
+
+    //DUNKERS
+
+    //SHOOTERS & DUNKERS
+
 
 
 }

@@ -4,6 +4,7 @@ public class Player {
     private int dunkRating;
     private int threeRating;
     private int score = 0;
+    private int dunkScore = 0;
 
     public enum PlayerType {
         SHOOTER, DUNKER, BOTH;
@@ -56,12 +57,27 @@ public class Player {
 
     public void addScore(int score) {
         this.score += score;
+        this.dunkScore += score;
+    }
+
+    public int getDunkScore(){
+        return dunkScore;
+    }
+
+    public void setDunkScore(int ds){
+        dunkScore = ds;
     }
 
     public PlayerType getType() {
         return type;
     }
 
+    public int getDunkerType(){
+        if(dunkRating >= 98) {return 4;}
+        else if(dunkRating >= 95) {return 3;}
+        else if(dunkRating >= 90) {return 2;}
+        else return 1;
+    }
 
     public String toString() {
         return name;

@@ -19,7 +19,7 @@ public class PlayerList {
 
     //DUNKERS
     public static Player zion_williamson = new Player("Zion Williamson", 99, Player.PlayerType.DUNKER);
-    public static Player ja_morant = new Player("Ja Morant", 98, Player.PlayerType.DUNKER);
+    public static Player ja_morant = new Player("Ja Morant", 97, Player.PlayerType.DUNKER);
     public static Player derrick_jones = new Player("Derrick Jones Jr.", 96, Player.PlayerType.DUNKER);
     public static Player miles_bridges = new Player("Miles Bridges", 95, Player.PlayerType.DUNKER);
     public static Player dennis_smith = new Player("Dennis Smith Jr.", 94, Player.PlayerType.DUNKER);
@@ -28,7 +28,7 @@ public class PlayerList {
 
     //SHOOTERS & DUNKERS
     public static Player ben_simmons = new Player("Ben Simmons", 25, 80);
-    public static Player zach_lavine = new Player("Zach LaVine", 88, 95);
+    public static Player zach_lavine = new Player("Zach LaVine", 88, 98);
     public static Player donovan_mitchell = new Player("Donovan Mitchell", 85, 92);
     public static Player lebron_james = new Player("LeBron James", 80, 90);
     public static Player mason_plumlee = new Player("Mason Plumlee", 70, 85);

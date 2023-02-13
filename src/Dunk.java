@@ -31,13 +31,20 @@ public class Dunk {
         if(ranDunk > 50){ranDunk = 50;}
 
         switch(type) {
-            case ELITE:
+            case LEGENDARY:
                 if(attempt == 1)
                     return ranDunk;
                 else if(attempt == 2)
                     return ranDunk - 1;
                 else
                     return ranDunk - 2;
+            case ELITE:
+                if(attempt == 1)
+                    return ranDunk;
+                else if(attempt == 2)
+                    return ranDunk - 2;
+                else
+                    return ranDunk - 4;
             case PRO:
                 if(attempt == 1)
                     return ranDunk;

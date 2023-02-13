@@ -113,10 +113,23 @@ public class DunkContest {
             System.out.println();
         }
 
-        Player p;
-        for (int i = 0; i < 2; i++) {
-            p = updated.poll();
-            secondRound.add(p);
+        Player p1;
+        Player p2;
+        Player pWin;
+
+        for (int i = 1; i <= 2; i++) {
+            p1 = updated.poll();
+            p2 = updated.peek();
+
+            if((p1.getScore() == p2.getScore()) && (i == 2)){
+                pWin = tiebreaker(p1, p2);
+                secondRound.add(pWin);
+                System.out.println();
+                System.out.println(pWin.getName() + " advances");
+                System.out.println();
+                continue;
+            }
+            secondRound.add(p1);
         }
     }
 
@@ -147,22 +160,52 @@ public class DunkContest {
             System.out.println();
         }
 
-        Player p;
-        for (int i = 0; i < 2; i++) {
-            p = updated.poll();
+        for(Player p : updated){
             final2.add(p);
         }
 
-        winner = final2.poll();
-        runner_up = final2.poll();
+        Player p1 = final2.poll();
+        Player p2 = final2.poll();
+
+        if(p1.getScore() == p2.getScore()) {
+            winner = tiebreaker(p1, p2);
+            System.out.println();
+        } else {
+            winner = p1;
+            runner_up = p2;
+        }
+
     }
 
     public void simDunkContest(){
         System.out.println("Dunk Contest:");
         simFirstRound();
         simSecondRound();
-        System.out.println("Dunk Contest Winner: " + winner.getName() + "(" + winner.getScore() + ")");
-        System.out.println("Dunk Contest Runner-Up: " + runner_up.getName() + "(" + runner_up.getScore() + ")");
+        System.out.println("Dunk Contest Winner: " + winner.getName());
+        System.out.println("Dunk Contest Runner-Up: " + runner_up.getName());
     }
+
+    private Player tiebreaker(Player p1, Player p2) {
+        p1.setDunkScore(0);
+        p2.setDunkScore(0);
+        System.out.println("Tiebreaker between: " + p1.getName() + " and " + p2.getName() + ":");
+        System.out.println(p1.getName());
+        simTurn(p1);
+        System.out.println();
+        System.out.println(p2.getName());
+        simTurn(p2);
+
+        if(p1.getDunkScore() > p2.getDunkScore()){
+            p1.addScore(p1.getDunkScore() * -1);
+            p2.addScore(p2.getDunkScore() * -1);
+            runner_up = p2;
+            return p1;
+        }
+        p1.addScore(p1.getDunkScore() * -1);
+        p2.addScore(p2.getDunkScore() * -1);
+        runner_up = p1;
+        return p2;
+    }
+
 
 }

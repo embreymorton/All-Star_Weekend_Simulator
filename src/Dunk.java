@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class Dunk {
     private String name;
     private int difficulty;
@@ -13,56 +14,56 @@ public class Dunk {
 
     private DunkType type;
 
-    public Dunk(String n, int d, int s, DunkType t){
+    public Dunk(String n, int d, int s, DunkType t) {
         name = n;
         difficulty = d;
         dunkScore = s;
         type = t;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public int getDifficulty(){
+
+    public int getDifficulty() {
         return difficulty;
     }
-    public int getDunkScore(int attempt){
+
+    public int getDunkScore(int attempt) {
         randNum = random.nextInt(10) - 5;
         ranDunk = dunkScore + randNum;
-        if(ranDunk > 50){ranDunk = 50;}
-        if(ranDunk < 38){ranDunk = 38;}
+        if (ranDunk > 50) {
+            ranDunk = 50;
+        }
+        if (ranDunk < 35) {
+            ranDunk = 35;
+        }
 
 
-        switch(type) {
+        switch (type) {
             case LEGENDARY:
-                if(attempt == 1)
+                if (attempt == 1)
+                    return 50;
+                else
                     return ranDunk;
-                else if(attempt == 2)
+            case ELITE:
+                if (attempt == 1)
+                    return ranDunk;
+                else if (attempt == 2)
                     return ranDunk - 1;
                 else
                     return ranDunk - 2;
-            case ELITE:
-                if(attempt == 1)
+            case PRO:
+                if (attempt == 1)
                     return ranDunk;
-                else if(attempt == 2)
+                else if (attempt == 2)
                     return ranDunk - 2;
                 else
                     return ranDunk - 4;
-            case PRO:
-                if(attempt == 1)
-                    return ranDunk;
-                else if(attempt == 2)
-                    return (int)(ranDunk * 0.95);
-                else
-                    return (int)(ranDunk * 0.9);
             case SAFETY:
-                if(attempt == 1)
-                    return ranDunk;
-                else if(attempt == 2)
-                    return (int)(ranDunk * 0.9);
-                else
-                    return (int)(ranDunk * 0.8);
+                return ranDunk;
             default:
-                return 0;
+                return 30;
         }
     }
 

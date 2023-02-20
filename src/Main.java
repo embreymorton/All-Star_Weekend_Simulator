@@ -3,19 +3,20 @@ public class Main {
 
         ThreePointContest tpc = new ThreePointContest(
                 PlayerList.klay_thompson,
-                PlayerList.kevin_durant,
-                PlayerList.kyrie_irving,
-                PlayerList.zach_lavine,
-                PlayerList.lamelo_ball,
+                PlayerList.reggie_miller,
+                PlayerList.michael_jordan,
+                PlayerList.lebron_james,
+                PlayerList.larry_bird,
                 PlayerList.steph_curry);
 
         DunkContest dc = new DunkContest(
-                PlayerList.zach_lavine,
-                PlayerList.ja_morant,
-                PlayerList.mac_mcclung,
-                PlayerList.zion_williamson);
+                PlayerList.michael_jordan,
+                PlayerList.vince_carter,
+                PlayerList.lebron_james,
+                PlayerList.kobe_bryant);
 
         AllStarWeekend asw = new AllStarWeekend(tpc, dc);
-        asw.simSimple();
+        asw.simDetailed();
+
     }
 }

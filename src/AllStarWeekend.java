@@ -1,9 +1,8 @@
 public class AllStarWeekend {
 
-    private DunkContest dc;
-    private ThreePointContest tpc;
-
-    private Player[] winners = new Player[2];
+    private final DunkContest dc;
+    private final ThreePointContest tpc;
+    private final Player[] winners = new Player[2];
 
     public AllStarWeekend(ThreePointContest tpc, DunkContest dc) {
         this.dc = dc;

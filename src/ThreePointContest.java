@@ -30,15 +30,15 @@ public class ThreePointContest {
         }
     }
 
-    public Player get3PTWinner(){
+    public Player get3PTWinner() {
         return winner;
     }
 
-    public void getContestants(){
+    public void getContestants() {
         System.out.println("Three Point Contest Contestants: ");
         int i = 1;
-        for(Player p : players){
-            if(i == 6) System.out.print(p.getName());
+        for (Player p : players) {
+            if (i == 6) System.out.print(p.getName());
             else System.out.print(p.getName() + ", ");
             i++;
         }
@@ -57,10 +57,7 @@ public class ThreePointContest {
             System.out.print("X ");
             return false;
         }
-        if (p.getThreeRating() >= randNum) {
-            return true;
-        }
-        return false;
+        return p.getThreeRating() >= randNum;
     }
 
     //Simulates a money ball shot (worth 2 points)
@@ -75,10 +72,7 @@ public class ThreePointContest {
             System.out.print("X ");
             return false;
         }
-        if (p.getThreeRating() >= randNum) {
-            return true;
-        }
-        return false;
+        return p.getThreeRating() >= randNum;
     }
 
     //Simulates a Mountain Dew shot (worth 3 points)
@@ -93,10 +87,7 @@ public class ThreePointContest {
             System.out.print("X ");
             return false;
         }
-        if (p.getThreeRating() >= randNum) {
-            return true;
-        }
-        return false;
+        return p.getThreeRating() >= randNum;
     }
 
     //Simulates 5 shots (4 Regular shots = 1 point each, 1 Money Ball shot = 2 points)
@@ -105,12 +96,10 @@ public class ThreePointContest {
             if (madeShot(p, inDepth)) {
                 p.addScore(1);
             }
-            ;
         }
         if (madeMoneyBall(p, inDepth)) {
             p.addScore(2);
         }
-        ;
     }
 
     //Simulates Rack with 5 Money Ball Shots
@@ -119,7 +108,6 @@ public class ThreePointContest {
             if (madeMoneyBall(p, inDepth)) {
                 p.addScore(2);
             }
-            ;
         }
     }
 
@@ -203,11 +191,11 @@ public class ThreePointContest {
             secondRound.add(p1);
         }
 
-        if(inDepth){
+        if (inDepth) {
             p1 = secondRound.poll();
             p2 = secondRound.poll();
             p3 = secondRound.poll();
-            System.out.println("Advancing to finals: ");
+            System.out.println("Advancing to Final Round:");
             System.out.println(p1.getName() + "(" + p1.getScore() + ")");
             System.out.println(p2.getName() + "(" + p2.getScore() + ")");
             System.out.println(p3.getName() + "(" + p3.getScore() + ")");
@@ -233,7 +221,7 @@ public class ThreePointContest {
                 System.out.println(p.getName());
                 simTurn(p, inDepth);
                 updated.add(p);
-                if(i != 3) System.out.println();
+                if (i != 3) System.out.println();
                 i++;
             }
         } else {
@@ -262,7 +250,7 @@ public class ThreePointContest {
         }
 
         if (p1.getScore() == p2.getScore()) {
-            if (!inDepth) System.out.println();
+            System.out.println();
             winner = tiebreaker(p1, p2, inDepth);
             System.out.println();
         } else {
@@ -309,8 +297,10 @@ public class ThreePointContest {
                 if (madeMoneyBall(p1, inDepth)) {
                     score1 += 2;
                 }
-                if(i == 15){
-                    if(madeMountainDew(p1, inDepth)) {score1 += 3;}
+                if (i == 15) {
+                    if (madeMountainDew(p1, inDepth)) {
+                        score1 += 3;
+                    }
                 }
                 if (inDepth) System.out.println();
                 continue;
@@ -329,8 +319,10 @@ public class ThreePointContest {
                 if (madeMoneyBall(p2, inDepth)) {
                     score2 += 2;
                 }
-                if(i == 15){
-                    if(madeMountainDew(p1, inDepth)) {score2 += 3;}
+                if (i == 15) {
+                    if (madeMountainDew(p1, inDepth)) {
+                        score2 += 3;
+                    }
                 }
                 if (inDepth) System.out.println();
                 continue;

@@ -29,6 +29,8 @@ public class Dunk {
         randNum = random.nextInt(10) - 5;
         ranDunk = dunkScore + randNum;
         if(ranDunk > 50){ranDunk = 50;}
+        if(ranDunk < 38){ranDunk = 38;}
+
 
         switch(type) {
             case LEGENDARY:

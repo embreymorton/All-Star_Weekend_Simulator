@@ -3,11 +3,9 @@ import java.util.PriorityQueue;
 
 public class ThreePointContest {
     private Player p1, p2, p3, p4, p5, p6, winner;
-
     private PriorityQueue<Player> players = new PriorityQueue<>(6, new PlayerComparator());
     private PriorityQueue<Player> secondRound = new PriorityQueue<>(3, new PlayerComparator());
     private PriorityQueue<Player> final3 = new PriorityQueue<>(3, new PlayerComparator());
-
     private int randNum;
 
     public ThreePointContest(Player one, Player two, Player three, Player four, Player five, Player six) {
@@ -30,6 +28,21 @@ public class ThreePointContest {
                 throw new IllegalArgumentException(p.getName() + " cannot participate in the 3PT Contest");
             }
         }
+    }
+
+    public Player get3PTWinner(){
+        return winner;
+    }
+
+    public void getContestants(){
+        System.out.println("Three Point Contest Contestants: ");
+        int i = 1;
+        for(Player p : players){
+            if(i == 6) System.out.print(p.getName());
+            else System.out.print(p.getName() + ", ");
+            i++;
+        }
+        System.out.println();
     }
 
     //Simulates a regular shot based on Player's rating
@@ -163,6 +176,7 @@ public class ThreePointContest {
 
         Player p1;
         Player p2;
+        Player p3;
         Player pWin;
         for (int i = 1; i <= 3; i++) {
             p1 = updated.poll();
@@ -188,6 +202,21 @@ public class ThreePointContest {
             }
             secondRound.add(p1);
         }
+
+        if(inDepth){
+            p1 = secondRound.poll();
+            p2 = secondRound.poll();
+            p3 = secondRound.poll();
+            System.out.println("Advancing to finals: ");
+            System.out.println(p1.getName() + "(" + p1.getScore() + ")");
+            System.out.println(p2.getName() + "(" + p2.getScore() + ")");
+            System.out.println(p3.getName() + "(" + p3.getScore() + ")");
+            secondRound.add(p1);
+            secondRound.add(p2);
+            secondRound.add(p3);
+            System.out.println();
+        }
+
     }
 
     //Simulates a Turn for each of the 3 finalists --> inserts them into new Priority Queue to resort
@@ -199,11 +228,13 @@ public class ThreePointContest {
         }
 
         if (inDepth) {
+            int i = 1;
             for (Player p : secondRound) {
                 System.out.println(p.getName());
                 simTurn(p, inDepth);
                 updated.add(p);
-                System.out.println();
+                if(i != 3) System.out.println();
+                i++;
             }
         } else {
             for (Player p : secondRound) {
@@ -249,7 +280,7 @@ public class ThreePointContest {
         System.out.println("Second Round:");
         System.out.println();
         simSecondRound(true);
-        System.out.println("3PT Contest Winner: " + winner.getName());
+        System.out.println("3PT Contest Winner: " + winner.getName() + "(" + winner.getScore() + ")");
     }
 
     //Simulates a 3PT Contest --> Simplified version that only shows scores
@@ -259,7 +290,7 @@ public class ThreePointContest {
         System.out.println();
         System.out.println("Second Round:");
         simSecondRound(false);
-        System.out.println("3PT Contest Winner: " + winner.getName());
+        System.out.println("3PT Contest Winner: " + winner.getName() + "(" + winner.getScore() + ")");
     }
 
     public Player getWinner() {

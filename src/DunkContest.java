@@ -37,6 +37,22 @@ public class DunkContest {
         }
     }
 
+    public Player getDunkWinner(){
+        return winner;
+    }
+
+    public void getContestants(){
+        System.out.println("Dunk Contest Contestants: ");
+        int i = 1;
+        for(Player p : players){
+            if(i == 4) System.out.print(p.getName());
+            else System.out.print(p.getName() + ", ");
+            i++;
+        }
+        System.out.println();
+    }
+
+    //Randomly generates a Dunk from the Array of Dunks based on DunkTier/Level
     private Dunk generateDunk(int dunkTier){
         switch(dunkTier){
             case 4:
@@ -54,18 +70,20 @@ public class DunkContest {
         }
     }
 
+    //Randomly calculates if a Dunk is made or missed
     private boolean madeDunk(Player p, Dunk d){
         rating = p.getDunkRating();
         difficulty = d.getDifficulty();
 
         randNum = difficulty - (int)(Math.random() * 15);
-        //System.out.println(randNum);
 
         if(rating > randNum) {return true;}
         return false;
     }
 
-    private void simTurn(Player p){
+    //Simulates a Dunk Attempt for a Player (3 Attempts)
+    //Score diminishes with each attempt
+    private void simTurn(Player p, boolean inDepth){
         dunkerType = p.getDunkerType();
         dunk = generateDunk(dunkerType);
 
@@ -74,43 +92,77 @@ public class DunkContest {
                 dunk = generateDunk(dunkerType - 1);
                 if (madeDunk(p, dunk)) {
                     p.addScore(dunk.getDunkScore(i));
-                    System.out.println("Attempt " + i + ": Successful " + dunk.getName() + " Dunk");
+                    if(inDepth)System.out.println("Attempt " + i + ": Successful " + dunk.getName() + " Dunk");
+                    else {
+                        System.out.print(p.getName() + ": Successful " + dunk.getName() + " Dunk --> ");
+                        System.out.println("Score: " + p.getDunkScore());
+                    }
                 } else{
-                    System.out.println("Attempt " + i + ": Missed " + dunk.getName() + " Dunk");
+                    if(i == 3 || inDepth) {
+                        if (inDepth) System.out.println("Attempt " + i + ": Missed " + dunk.getName() + " Dunk");
+                        else {
+                            System.out.print(p.getName() + ": Missed " + dunk.getName() + " Dunk --> ");
+                            p.addScore(30);
+                            System.out.println("Score: " + p.getDunkScore());
+                        }
+                    }
                 }
                 break;
             }
 
             if (madeDunk(p, dunk)) {
                 p.addScore(dunk.getDunkScore(i));
-                System.out.println("Attempt " + i + ": Successful " + dunk.getName() + " Dunk");
+                if(inDepth)System.out.println("Attempt " + i + ": Successful " + dunk.getName() + " Dunk");
+                else {
+                    System.out.print(p.getName() + ": Successful " + dunk.getName() + " Dunk --> ");
+                    System.out.println("Score: " + p.getDunkScore());
+                }
                 break;
             } else
-                System.out.println("Attempt " + i + ": Missed " + dunk.getName() + " Dunk");
+            if(i == 3 || inDepth) {
+                if (inDepth) System.out.println("Attempt " + i + ": Missed " + dunk.getName() + " Dunk");
+                else {
+                    System.out.print(p.getName() + ": Missed " + dunk.getName() + " Dunk --> ");
+                    p.addScore(30);
+                    System.out.println("Score: " + p.getDunkScore());
+                }
+            }
         }
-        System.out.println("Score: " + p.getDunkScore());
+        if(inDepth && (p.getDunkScore() == 0)) {
+            p.addScore(30);
+        }
+        if(inDepth) System.out.println("Score: " + p.getDunkScore());
     }
 
-    private void simFirstRound(){
+    //Simulates 2 Dunks for each of the 4 contestants
+    //Places 2 highest scorers into Second Round priority queue
+    private void simFirstRound(boolean inDepth){
         PriorityQueue<Player> updated = new PriorityQueue<>(2, new PlayerComparator());
+
+        for(Player p : players){
+            p.setDunkScore(0);
+            p.setScore(0);
+        }
 
         System.out.println("First Round: Dunk One");
         for(Player p : players){
-            System.out.println(p.getName());
-            simTurn(p);
-            updated.add(p);
-            System.out.println();
+            if (inDepth) System.out.println(p.getName());
+            simTurn(p, inDepth);
+            if(inDepth)System.out.println();
         }
 
         for(Player p : players){
             p.setDunkScore(0);
         }
 
+        if(!inDepth)System.out.println();
+
         System.out.println("First Round: Dunk Two");
         for(Player p : players){
-            System.out.println(p.getName());
-            simTurn(p);
-            System.out.println();
+            if(inDepth) System.out.println(p.getName());
+            simTurn(p, inDepth);
+            updated.add(p);
+            if(inDepth)System.out.println();
         }
 
         Player p1;
@@ -122,18 +174,31 @@ public class DunkContest {
             p2 = updated.peek();
 
             if((p1.getScore() == p2.getScore()) && (i == 2)){
-                pWin = tiebreaker(p1, p2);
+                if(!inDepth) System.out.println();
+                pWin = tiebreaker(p1, p2, inDepth);
                 secondRound.add(pWin);
-                System.out.println();
+                if(inDepth) System.out.println();
                 System.out.println(pWin.getName() + " advances");
-                System.out.println();
+                if(inDepth) System.out.println();
                 continue;
             }
             secondRound.add(p1);
         }
+
+        if(inDepth){
+            p1 = secondRound.poll();
+            p2 = secondRound.poll();
+            System.out.println("Advancing to finals: ");
+            System.out.println(p1.getName() + "(" + p1.getScore() + ")");
+            System.out.println(p2.getName() + "(" + p2.getScore() + ")");
+            secondRound.add(p1);
+            secondRound.add(p2);
+        }
+
     }
 
-    private void simSecondRound(){
+    //Simulates 2 Dunks for each of the finalists
+    private void simSecondRound(boolean inDepth){
         PriorityQueue<Player> updated = new PriorityQueue<>(2, new PlayerComparator());
 
         for(Player p : secondRound){
@@ -143,21 +208,23 @@ public class DunkContest {
 
         System.out.println("Second Round: Dunk One");
         for(Player p : secondRound){
-            System.out.println(p.getName());
-            simTurn(p);
+            if(inDepth) System.out.println(p.getName());
+            simTurn(p, inDepth);
             updated.add(p);
-            System.out.println();
+            if(inDepth)System.out.println();
         }
 
         for(Player p : secondRound){
             p.setDunkScore(0);
         }
 
+        if(!inDepth)System.out.println();
+
         System.out.println("Second Round: Dunk Two");
         for(Player p : secondRound){
-            System.out.println(p.getName());
-            simTurn(p);
-            System.out.println();
+            if(inDepth) System.out.println(p.getName());
+            simTurn(p, inDepth);
+            if(inDepth)System.out.println();
         }
 
         for(Player p : updated){
@@ -168,8 +235,8 @@ public class DunkContest {
         Player p2 = final2.poll();
 
         if(p1.getScore() == p2.getScore()) {
-            winner = tiebreaker(p1, p2);
-            System.out.println();
+            winner = tiebreaker(p1, p2, inDepth);
+            if(inDepth)System.out.println();
         } else {
             winner = p1;
             runner_up = p2;
@@ -177,23 +244,39 @@ public class DunkContest {
 
     }
 
-    public void simDunkContest(){
-        System.out.println("Dunk Contest:");
-        simFirstRound();
-        simSecondRound();
-        System.out.println("Dunk Contest Winner: " + winner.getName());
-        System.out.println("Dunk Contest Runner-Up: " + runner_up.getName());
+    //Simulates a Dunk Contest that shows each Dunk attempt in detail
+    public void simDunkContest_inDepth(){
+        simFirstRound(true);
+        System.out.println();
+        simSecondRound(true);
+        System.out.println("Dunk Contest Winner: " + winner.getName() + "(" + winner.getScore() + ")");
+        System.out.println("Dunk Contest Runner-Up: " + runner_up.getName() + "(" + runner_up.getScore() + ")");
     }
 
-    private Player tiebreaker(Player p1, Player p2) {
+    //Simulates a Dunk Contest that only shows one dunk and the score that corresponds with it
+    public void simDunkContest_simple(){
+        simFirstRound(false);
+        System.out.println();
+        simSecondRound(false);
+        System.out.println();
+        System.out.println("Dunk Contest Winner: " + winner.getName() + "(" + winner.getScore() + ")");
+        System.out.println("Dunk Contest Runner-Up: " + runner_up.getName() + "(" + runner_up.getScore() + ")");
+    }
+
+    //Resolves a tie between two Players
+    private Player tiebreaker(Player p1, Player p2, boolean inDepth) {
         p1.setDunkScore(0);
         p2.setDunkScore(0);
         System.out.println("Tiebreaker between: " + p1.getName() + " and " + p2.getName() + ":");
-        System.out.println(p1.getName());
-        simTurn(p1);
-        System.out.println();
-        System.out.println(p2.getName());
-        simTurn(p2);
+        if(inDepth) System.out.println(p1.getName());
+        simTurn(p1, inDepth);
+        if(inDepth) System.out.println();
+        if(inDepth) System.out.println(p2.getName());
+        simTurn(p2, inDepth);
+
+        if(p1.getDunkScore() == p2.getDunkScore()){
+            return tiebreaker(p1, p2, inDepth);
+        }
 
         if(p1.getDunkScore() > p2.getDunkScore()){
             p1.addScore(p1.getDunkScore() * -1);

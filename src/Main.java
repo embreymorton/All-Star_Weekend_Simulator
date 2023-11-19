@@ -1,6 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        
+
+        //test
+
         ThreePointContest tpc = new ThreePointContest(
                 PlayerList.klay_thompson,
                 PlayerList.buddy_hield,

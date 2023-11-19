@@ -1,24 +1,39 @@
+import java.util.Arrays;
+import java.util.List;
+
 public class Main {
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        //test
+    //    ThreePointContest tpc =
+    //        new ThreePointContest(
+    //            PlayerList.klay_thompson,
+    //            PlayerList.buddy_hield,
+    //            PlayerList.kevin_durant,
+    //            PlayerList.lebron_james,
+    //            PlayerList.glen_rice,
+    //            PlayerList.steph_curry);
+    //
+    //    DunkContest dc =
+    //        new DunkContest(
+    //            PlayerList.aaron_gordon,
+    //            PlayerList.mac_mcclung,
+    //            PlayerList.vince_carter,
+    //            PlayerList.zach_lavine);
+    //
+    //    AllStarWeekend asw = new AllStarWeekend(tpc, dc);
+    //    asw.simDetailed();
 
-        ThreePointContest tpc = new ThreePointContest(
-                PlayerList.klay_thompson,
-                PlayerList.buddy_hield,
-                PlayerList.kevin_durant,
-                PlayerList.lebron_james,
-                PlayerList.glen_rice,
-                PlayerList.steph_curry);
+    List<Player> players =
+        Arrays.asList(
+            PlayerList.klay_thompson,
+            PlayerList.buddy_hield,
+            PlayerList.kevin_durant,
+            PlayerList.lebron_james,
+            PlayerList.glen_rice,
+            PlayerList.steph_curry);
 
-        DunkContest dc = new DunkContest(
-                PlayerList.aaron_gordon,
-                PlayerList.mac_mcclung,
-                PlayerList.vince_carter,
-                PlayerList.zach_lavine);
+    TPC tp = new TPC(players);
 
-        AllStarWeekend asw = new AllStarWeekend(tpc, dc);
-        asw.simDetailed();
-
-    }
+    tp.simulate_TPC();
+  }
 }

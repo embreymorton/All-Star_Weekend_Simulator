@@ -11,11 +11,11 @@ public class PlayerComparator implements Comparator<Player> {
     return 0;
   }
 
-  public Player compare(Player p1, Player p2, Player p3) {
+  public List<Player> compare(Player p1, Player p2, Player p3) {
     List<Player> list = new ArrayList<>(Arrays.asList(p1, p2, p3));
     list.sort(this);
 
     if (list.get(0).getScore() == list.get(1).getScore()) return null;
-    return list.get(0);
+    return list;
   }
 }

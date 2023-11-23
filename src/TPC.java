@@ -20,7 +20,7 @@ public class TPC {
     return contestants;
   }
 
-  public void sim_rack(Player player, String type) {
+  private void sim_rack(Player player, String type) {
     for (int i = 0; i < 5; i++) {
       if (i == 4) current_shot = shotTypes.get("Money Ball");
       else current_shot = shotTypes.get(type);
@@ -28,7 +28,7 @@ public class TPC {
     }
   }
 
-  public void sim_turn(Player player, int num_racks) {
+  private void sim_turn(Player player, int num_racks) {
     System.out.println(player.getName());
     player.setScore(0);
 
@@ -43,7 +43,7 @@ public class TPC {
     System.out.println(player.getScore() + "\n");
   }
 
-  public void first_round() {
+  private void first_round() {
     for (Player p : contestants) {
       sim_turn(p, 5);
     }
@@ -56,20 +56,22 @@ public class TPC {
     contestants = contestants.subList(0, 3);
   }
 
-  public void second_round() {
+  private void second_round() {
     for (Player p : contestants) {
       sim_turn(p, 5);
     }
     Collections.sort(contestants, new PlayerComparator());
 
     if (contestants.get(0).getScore() == contestants.get(1).getScore()) {
-      contestants.set(0, tie_breaker(contestants.get(0), contestants.get(1)));
+      if (contestants.get(0).getScore() == contestants.get(2).getScore())
+        contestants = tie_breaker(contestants.get(0), contestants.get(1), contestants.get(2));
+      else contestants.set(0, tie_breaker(contestants.get(0), contestants.get(1)));
     }
 
     winner = contestants.get(0);
   }
 
-  public Player tie_breaker(Player p1, Player p2) {
+  private Player tie_breaker(Player p1, Player p2) {
     System.out.println("-------------------------");
     System.out.println("Simulating Tie-Breaker Between " + p1.getName() + " and " + p2.getName());
     System.out.println("-------------------------");
@@ -85,19 +87,19 @@ public class TPC {
     else return tie_breaker(p1, p2);
   }
 
-  public Player tie_breaker(Player p1, Player p2, Player p3) {
+  private List<Player> tie_breaker(Player p1, Player p2, Player p3) {
     System.out.println("-------------------------");
-    System.out.println("Simulating Tie-Breaker Between");
+    System.out.println("Simulating Tie-Breaker Between" + p1.getName() + ", " + p2.getName() + " and " + p3.getName());
     System.out.println("-------------------------");
     sim_turn(p1, 3);
     sim_turn(p2, 3);
     sim_turn(p3, 3);
 
     PlayerComparator c = new PlayerComparator();
-    Player result = c.compare(p1, p2, p3);
+    List<Player> result = c.compare(p1, p2, p3);
 
     if (result == null) return tie_breaker(p1, p2, p3);
-    else return null;
+    else return result;
   }
 
   public void simulate_TPC() {

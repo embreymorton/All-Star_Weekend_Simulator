@@ -1,5 +1,5 @@
 public class Player {
-  String name;
+  private String name;
   private int dunkRating;
   private int threeRating;
   private int score = 0;

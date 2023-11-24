@@ -23,7 +23,7 @@ public class Main {
     //    AllStarWeekend asw = new AllStarWeekend(tpc, dc);
     //    asw.simDetailed();
 
-    List<Player> players =
+    List<Player> players3 =
         Arrays.asList(
             PlayerList.klay_thompson,
             PlayerList.buddy_hield,
@@ -32,8 +32,19 @@ public class Main {
             PlayerList.glen_rice,
             PlayerList.steph_curry);
 
-    TPC tp = new TPC(players);
+    List<Player> playersD =
+        Arrays.asList(
+            PlayerList.miles_bridges,
+            PlayerList.lebron_james,
+            PlayerList.vince_carter,
+            PlayerList.mac_mcclung);
 
-    tp.simulate_TPC();
+    TPC tp = new TPC(players3);
+
+    // tp.simulate_TPC();
+
+    DC dc = new DC(playersD);
+
+    dc.simulate_DC();
   }
 }

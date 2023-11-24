@@ -2,8 +2,7 @@ public class Player {
   private String name;
   private int dunkRating;
   private int threeRating;
-  private int score = 0;
-  private int dunkScore = 0;
+  private int score;
 
   public enum PlayerType {
     SHOOTER,
@@ -15,7 +14,7 @@ public class Player {
 
   public Player(String name, int rating, PlayerType type) {
     if (name == null) {
-      throw new IllegalArgumentException("Player need a name");
+      throw new IllegalArgumentException("Players need a name");
     }
     this.name = name;
 
@@ -61,15 +60,6 @@ public class Player {
 
   public void addScore(int score) {
     this.score += score;
-    this.dunkScore += score;
-  }
-
-  public int getDunkScore() {
-    return dunkScore;
-  }
-
-  public void setDunkScore(int ds) {
-    dunkScore = ds;
   }
 
   public PlayerType getType() {
@@ -78,12 +68,12 @@ public class Player {
 
   public int getDunkerType() {
     if (dunkRating >= 105) {
-      return 4;
-    } else if (dunkRating >= 95) {
       return 3;
-    } else if (dunkRating >= 90) {
+    } else if (dunkRating >= 95) {
       return 2;
-    } else return 1;
+    } else if (dunkRating >= 90) {
+      return 1;
+    } else return 0;
   }
 
   public String toString() {

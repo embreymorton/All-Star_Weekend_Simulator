@@ -29,7 +29,7 @@ public class TPC {
   }
 
   private void sim_turn(Player player, int num_racks) {
-    System.out.println(player.getName());
+    System.out.println(player);
     player.setScore(0);
 
     int MB_rack = (int) (Math.random() * 4 + 1);
@@ -73,7 +73,7 @@ public class TPC {
 
   private Player tie_breaker(Player p1, Player p2) {
     System.out.println("-------------------------");
-    System.out.println("Simulating Tie-Breaker Between " + p1.getName() + " and " + p2.getName());
+    System.out.println("Simulating Tie-Breaker Between " + p1 + " and " + p2);
     System.out.println("-------------------------");
 
     sim_turn(p1, 3);
@@ -89,7 +89,7 @@ public class TPC {
 
   private List<Player> tie_breaker(Player p1, Player p2, Player p3) {
     System.out.println("-------------------------");
-    System.out.println("Simulating Tie-Breaker Between" + p1.getName() + ", " + p2.getName() + " and " + p3.getName());
+    System.out.println("Simulating Tie-Breaker Between" + p1 + ", " + p2 + " and " + p3);
     System.out.println("-------------------------");
     sim_turn(p1, 3);
     sim_turn(p2, 3);
@@ -112,6 +112,6 @@ public class TPC {
     System.out.println("Simulating Second Round");
     System.out.println("-------------------------");
     second_round();
-    System.out.println("Your 3 Point Contest Winner: " + winner.getName());
+    System.out.println("3 Point Contest Winner: " + winner);
   }
 }

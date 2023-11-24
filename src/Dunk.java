@@ -14,7 +14,7 @@ public class Dunk {
   private int RNG;
   private Random random;
 
-  private Dunk(String name, int difficulty, int base_points) {
+  public Dunk(String name, int difficulty, int base_points) {
     this.name = name;
     this.difficulty = difficulty;
     this.base_points = base_points;

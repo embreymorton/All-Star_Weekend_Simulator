@@ -1,342 +1,127 @@
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class ThreePointContest {
-  private Player p1, p2, p3, p4, p5, p6, winner;
-  private PriorityQueue<Player> players = new PriorityQueue<>(6, new PlayerComparator());
-  private PriorityQueue<Player> secondRound = new PriorityQueue<>(3, new PlayerComparator());
-  private PriorityQueue<Player> final3 = new PriorityQueue<>(3, new PlayerComparator());
-  private int randNum;
+  private List<Player> contestants;
+  private Map<String, Shot> shotTypes;
+  private Shot current_shot;
+  private Player winner;
 
-  public ThreePointContest(
-      Player one, Player two, Player three, Player four, Player five, Player six) {
-    p1 = one;
-    p2 = two;
-    p3 = three;
-    p4 = four;
-    p5 = five;
-    p6 = six;
+  public ThreePointContest(List<Player> players) {
+    contestants = new ArrayList<>(players);
 
-    players.add(p1);
-    players.add(p2);
-    players.add(p3);
-    players.add(p4);
-    players.add(p5);
-    players.add(p6);
-
-    for (Player p : players) {
-      if (p.getType() == Player.PlayerType.DUNKER) {
-        throw new IllegalArgumentException(p.getName() + " cannot participate in the 3PT Contest");
-      }
-    }
+    shotTypes = new HashMap<>();
+    shotTypes.put("Regular", Shot.regular);
+    shotTypes.put("Money Ball", Shot.moneyBall);
+    shotTypes.put("Mountain Dew", Shot.mountainDew);
   }
 
-  public Player get3PTWinner() {
-    return winner;
-  }
-
-  public void getContestants() {
-    System.out.println("Three Point Contest Contestants: ");
-    int i = 1;
-    for (Player p : players) {
-      if (i == 6) System.out.print(p.getName());
-      else System.out.print(p.getName() + ", ");
-      i++;
+  private void printContestants() {
+    System.out.print("Contestants: ");
+    for(Player p : contestants){
+      System.out.print(p);
+      if(contestants.indexOf(p) != contestants.size() - 1)
+        System.out.print(" -- ");
     }
     System.out.println();
   }
 
-  // Simulates a regular shot based on Player's rating
-  private boolean madeShot(Player p, boolean inDepth) {
-    randNum = (int) (Math.random() * 125);
-
-    if (inDepth) {
-      if (p.getThreeRating() >= randNum) {
-        System.out.print("O ");
-        return true;
-      }
-      System.out.print("X ");
-      return false;
-    }
-    return p.getThreeRating() >= randNum;
+  public Player getWinner(){
+    return winner;
   }
 
-  // Simulates a money ball shot (worth 2 points)
-  private boolean madeMoneyBall(Player p, boolean inDepth) {
-    randNum = (int) (Math.random() * 150);
-
-    if (inDepth) {
-      if (p.getThreeRating() >= randNum) {
-        System.out.print("M ");
-        return true;
-      }
-      System.out.print("X ");
-      return false;
-    }
-    return p.getThreeRating() >= randNum;
-  }
-
-  // Simulates a Mountain Dew shot (worth 3 points)
-  private boolean madeMountainDew(Player p, boolean inDepth) {
-    randNum = (int) (Math.random() * 250);
-
-    if (inDepth) {
-      if (p.getThreeRating() >= randNum) {
-        System.out.print("3 ");
-        return true;
-      }
-      System.out.print("X ");
-      return false;
-    }
-    return p.getThreeRating() >= randNum;
-  }
-
-  // Simulates 5 shots (4 Regular shots = 1 point each, 1 Money Ball shot = 2 points)
-  private void simRack(Player p, boolean inDepth) {
-    for (int i = 0; i < 4; i++) {
-      if (madeShot(p, inDepth)) {
-        p.addScore(1);
-      }
-    }
-    if (madeMoneyBall(p, inDepth)) {
-      p.addScore(2);
-    }
-  }
-
-  // Simulates Rack with 5 Money Ball Shots
-  private void simMoneyBallRack(Player p, boolean inDepth) {
+  private void sim_rack(Player player, String type) {
     for (int i = 0; i < 5; i++) {
-      if (madeMoneyBall(p, inDepth)) {
-        p.addScore(2);
-      }
+      if (i == 4) current_shot = shotTypes.get("Money Ball");
+      else current_shot = shotTypes.get(type);
+      current_shot.takeShot(player);
     }
   }
 
-  // Simulates 5 Racks
-  private void simTurn(Player p, boolean inDepth) {
-    int mBallRack = (int) (Math.random() * 4 + 1);
+  private void sim_turn(Player player, int num_racks) {
+    System.out.println(player);
+    player.setScore(0);
 
-    for (int i = 1; i <= 5; i++) {
-      if (i == mBallRack) {
-        simMoneyBallRack(p, inDepth);
-        if (i == 2 || i == 4) {
-          if (madeMountainDew(p, inDepth)) {
-            p.addScore(3);
-          }
-        }
-        if (inDepth) System.out.println();
-        continue;
-      }
+    int MB_rack = (int) (Math.random() * 4 + 1);
+    for (int i = 0; i < num_racks; i++) {
+      if (i == MB_rack) sim_rack(player, "Money Ball");
+      else sim_rack(player, "Regular");
 
-      simRack(p, inDepth);
-      if (i == 2 || i == 4) {
-        if (madeMountainDew(p, inDepth)) {
-          p.addScore(3);
-        }
-      }
-      if (inDepth) System.out.println();
-    }
-
-    System.out.print("Score:" + p.getScore());
-    System.out.println();
-  }
-
-  // Simulates a Turn for each of the 6 players --> then puts the top 3 scorers into new Priority
-  // Queue
-  private void simFirstRound(boolean inDepth) {
-    PriorityQueue<Player> updated = new PriorityQueue<>(6, new PlayerComparator());
-    for (Player p : players) {
-      p.setScore(0);
-    }
-
-    if (inDepth) {
-      for (Player p : players) {
-        System.out.println(p.getName());
-        simTurn(p, inDepth);
-        updated.add(p);
-        System.out.println();
-      }
-    } else {
-      for (Player p : players) {
-        System.out.print(p.getName() + " --> ");
-        simTurn(p, inDepth);
-        updated.add(p);
-      }
-    }
-
-    Player p1;
-    Player p2;
-    Player p3;
-    Player pWin;
-    for (int i = 1; i <= 3; i++) {
-      p1 = updated.poll();
-      p2 = updated.peek();
-
-      if ((p1.getScore() == p2.getScore()) && (i == 3)) {
-        if (inDepth) {
-          pWin = tiebreaker(p1, p2, inDepth);
-          players.remove(pWin);
-          secondRound.add(pWin);
-          System.out.println();
-          System.out.println(pWin.getName() + " advances");
-          System.out.println();
-          continue;
-        } else {
-          System.out.println();
-          pWin = tiebreaker(p1, p2, inDepth);
-          players.remove(pWin);
-          secondRound.add(pWin);
-          System.out.println(pWin.getName() + " advances");
-          continue;
-        }
-      }
-      secondRound.add(p1);
-    }
-
-    if (inDepth) {
-      p1 = secondRound.poll();
-      p2 = secondRound.poll();
-      p3 = secondRound.poll();
-      System.out.println("Advancing to Final Round:");
-      System.out.println(p1.getName() + "(" + p1.getScore() + ")");
-      System.out.println(p2.getName() + "(" + p2.getScore() + ")");
-      System.out.println(p3.getName() + "(" + p3.getScore() + ")");
-      secondRound.add(p1);
-      secondRound.add(p2);
-      secondRound.add(p3);
+      if (i == 1 || i == 3) shotTypes.get("Mountain Dew").takeShot(player);
       System.out.println();
     }
+    System.out.println(player.getScore() + "\n");
   }
 
-  // Simulates a Turn for each of the 3 finalists --> inserts them into new Priority Queue to resort
-  private void simSecondRound(boolean inDepth) {
-    PriorityQueue<Player> updated = new PriorityQueue<>(3, new PlayerComparator());
+  private void first_round() {
+    for (Player p : contestants) {
+      sim_turn(p, 5);
+    }
+    Collections.sort(contestants, new PlayerComparator());
 
-    for (Player p : secondRound) {
-      p.setScore(0);
+    if (contestants.get(2).getScore() == contestants.get(3).getScore()) {
+      contestants.set(2, tie_breaker(contestants.get(2), contestants.get(3)));
     }
 
-    if (inDepth) {
-      int i = 1;
-      for (Player p : secondRound) {
-        System.out.println(p.getName());
-        simTurn(p, inDepth);
-        updated.add(p);
-        if (i != 3) System.out.println();
-        i++;
-      }
-    } else {
-      for (Player p : secondRound) {
-        System.out.print(p.getName() + " --> ");
-        simTurn(p, false);
-        updated.add(p);
-      }
-    }
-
-    Player p;
-    for (int i = 0; i < 3; i++) {
-      p = updated.poll();
-      final3.add(p);
-    }
-
-    Player p1 = final3.poll();
-    Player p2 = final3.poll();
-    Player p3 = final3.poll();
-
-    if (p1.getScore() == p2.getScore() && p1.getScore() == p3.getScore()) {
-      System.out.println();
-      System.out.println("TieBreaker Round");
-      simSecondRound(inDepth);
-      return;
-    }
-
-    if (p1.getScore() == p2.getScore()) {
-      System.out.println();
-      winner = tiebreaker(p1, p2, inDepth);
-      System.out.println();
-    } else {
-      winner = p1;
-      System.out.println();
-    }
+    contestants = contestants.subList(0, 3);
   }
 
-  // Simulates a 3PT Contest --> inDepth version that shows all makes & misses
-  public void sim3PTContest_inDepth() {
-    System.out.println("First Round:");
-    System.out.println();
-    simFirstRound(true);
-    System.out.println("Second Round:");
-    System.out.println();
-    simSecondRound(true);
-    System.out.println("3PT Contest Winner: " + winner.getName() + "(" + winner.getScore() + ")");
+  private void second_round() {
+    for (Player p : contestants) {
+      sim_turn(p, 5);
+    }
+    Collections.sort(contestants, new PlayerComparator());
+
+    if (contestants.get(0).getScore() == contestants.get(1).getScore()) {
+      if (contestants.get(0).getScore() == contestants.get(2).getScore())
+        contestants = tie_breaker(contestants.get(0), contestants.get(1), contestants.get(2));
+      else contestants.set(0, tie_breaker(contestants.get(0), contestants.get(1)));
+    }
+
+    winner = contestants.get(0);
   }
 
-  // Simulates a 3PT Contest --> Simplified version that only shows scores
-  public void sim3PTContest_Simple() {
-    System.out.println("First Round:");
-    simFirstRound(false);
-    System.out.println();
-    System.out.println("Second Round:");
-    simSecondRound(false);
-    System.out.println("3PT Contest Winner: " + winner.getName() + "(" + winner.getScore() + ")");
+  private Player tie_breaker(Player p1, Player p2) {
+    System.out.println("-------------------------");
+    System.out.println("Simulating Tie-Breaker Between " + p1 + " and " + p2);
+    System.out.println("-------------------------");
+
+    sim_turn(p1, 3);
+    sim_turn(p2, 3);
+
+    PlayerComparator c = new PlayerComparator();
+    int result = c.compare(p1, p2);
+
+    if (result == -1) return p1;
+    else if (result == 1) return p2;
+    else return tie_breaker(p1, p2);
   }
 
-  public Player getWinner() {
-    return winner;
+  private List<Player> tie_breaker(Player p1, Player p2, Player p3) {
+    System.out.println("-------------------------");
+    System.out.println("Simulating Tie-Breaker Between" + p1 + ", " + p2 + " and " + p3);
+    System.out.println("-------------------------");
+    sim_turn(p1, 3);
+    sim_turn(p2, 3);
+    sim_turn(p3, 3);
+
+    PlayerComparator c = new PlayerComparator();
+    List<Player> result = c.compare(p1, p2, p3);
+
+    if (result == null) return tie_breaker(p1, p2, p3);
+    else return result;
   }
 
-  // Resolves a tie between two Players
-  private Player tiebreaker(Player p1, Player p2, boolean inDepth) {
-    int score1 = 0;
-    int score2 = 0;
-    System.out.println("Tiebreaker between: " + p1.getName() + " and " + p2.getName() + ":");
-
-    System.out.println(p1.getName());
-    for (int i = 1; i <= 15; i++) {
-      if (i % 5 == 0) {
-        if (madeMoneyBall(p1, inDepth)) {
-          score1 += 2;
-        }
-        if (i == 15) {
-          if (madeMountainDew(p1, inDepth)) {
-            score1 += 3;
-          }
-        }
-        if (inDepth) System.out.println();
-        continue;
-      }
-      if (madeShot(p1, inDepth)) {
-        score1 += 1;
-      }
-    }
-    System.out.println("Score: " + score1);
-
-    if (inDepth) System.out.println();
-
-    System.out.println(p2.getName());
-    for (int i = 1; i <= 15; i++) {
-      if (i % 5 == 0) {
-        if (madeMoneyBall(p2, inDepth)) {
-          score2 += 2;
-        }
-        if (i == 15) {
-          if (madeMountainDew(p1, inDepth)) {
-            score2 += 3;
-          }
-        }
-        if (inDepth) System.out.println();
-        continue;
-      }
-      if (madeShot(p2, inDepth)) {
-        score2 += 1;
-      }
-    }
-    System.out.println("Score: " + score2);
-
-    if (score1 > score2) return p1;
-    else if (score2 > score1) return p2;
-    else {
-      System.out.println();
-      return tiebreaker(p1, p2, inDepth);
-    }
+  public void simulate_TPC() {
+    System.out.println("Three Point Contest Simulation");
+    printContestants();
+    System.out.println("-------------------------");
+    System.out.println("Simulating First Round");
+    System.out.println("-------------------------");
+    first_round();
+    System.out.println("-------------------------");
+    System.out.println("Simulating Second Round");
+    System.out.println("-------------------------");
+    second_round();
+    System.out.println("3 Point Contest Winner: " + winner);
   }
 }

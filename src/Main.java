@@ -39,9 +39,9 @@ public class Main {
             PlayerList.vince_carter,
             PlayerList.mac_mcclung);
 
-    TPC tp = new TPC(players3);
+    ThreePointContest tp = new ThreePointContest(players3);
 
-    DC dc = new DC(playersD);
+    DunkContest dc = new DunkContest(playersD);
 
     AllStarWeekend asw = new AllStarWeekend(tp, dc);
 

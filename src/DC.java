@@ -24,13 +24,13 @@ public class DC {
     return contestants;
   }
 
-  public void resetScores() {
+  private void resetScores() {
     for (Player p : contestants) {
       p.setScore(0);
     }
   }
 
-  public void sim_turn(Player player) {
+  private void sim_turn(Player player) {
     System.out.println(player);
 
     dunker_type = player.getDunkerType();
@@ -53,7 +53,7 @@ public class DC {
     System.out.println(dunk_score + "\n");
   }
 
-  public void first_round() {
+  private void first_round() {
     resetScores();
 
     System.out.println("Dunk One\n");
@@ -69,7 +69,7 @@ public class DC {
     contestants = contestants.subList(0, 2);
   }
 
-  public void second_round() {
+  private void second_round() {
     resetScores();
 
     System.out.println("Dunk One\n");

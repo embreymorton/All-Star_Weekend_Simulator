@@ -41,10 +41,10 @@ public class Main {
 
     TPC tp = new TPC(players3);
 
-    // tp.simulate_TPC();
-
     DC dc = new DC(playersD);
 
-    dc.simulate_DC();
+    AllStarWeekend asw = new AllStarWeekend(tp, dc);
+
+    asw.sim_weekend();
   }
 }

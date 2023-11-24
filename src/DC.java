@@ -20,8 +20,18 @@ public class DC {
     dunkTypes.put(3, Dunk.legendary);
   }
 
-  public List<Player> getContestants() {
-    return contestants;
+  private void printContestants() {
+    System.out.print("Contestants: ");
+    for(Player p : contestants){
+      System.out.print(p);
+      if(contestants.indexOf(p) != contestants.size() - 1)
+        System.out.print(" -- ");
+    }
+    System.out.println();
+  }
+
+  public Player getWinner(){
+    return winner;
   }
 
   private void resetScores() {
@@ -56,11 +66,11 @@ public class DC {
   private void first_round() {
     resetScores();
 
-    System.out.println("Dunk One\n");
+    System.out.println("--Dunk One--\n");
     for (Player p : contestants) {
       sim_turn(p);
     }
-    System.out.println("Dunk Two\n");
+    System.out.println("--Dunk Two--\n");
     for (Player p : contestants) {
       sim_turn(p);
     }
@@ -72,11 +82,11 @@ public class DC {
   private void second_round() {
     resetScores();
 
-    System.out.println("Dunk One\n");
+    System.out.println("--Dunk One--\n");
     for (Player p : contestants) {
       sim_turn(p);
     }
-    System.out.println("Dunk Two\n");
+    System.out.println("--Dunk Two--\n");
     for (Player p : contestants) {
       sim_turn(p);
     }
@@ -87,6 +97,7 @@ public class DC {
 
   public void simulate_DC() {
     System.out.println("Dunk Contest Simulation");
+    printContestants();
     System.out.println("-------------------------");
     System.out.println("Simulating First Round");
     System.out.println("-------------------------");

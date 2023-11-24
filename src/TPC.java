@@ -16,8 +16,18 @@ public class TPC {
     shotTypes.put("Mountain Dew", Shot.mountainDew);
   }
 
-  public List<Player> getContestants() {
-    return contestants;
+  private void printContestants() {
+    System.out.print("Contestants: ");
+    for(Player p : contestants){
+      System.out.print(p);
+      if(contestants.indexOf(p) != contestants.size() - 1)
+        System.out.print(" -- ");
+    }
+    System.out.println();
+  }
+
+  public Player getWinner(){
+    return winner;
   }
 
   private void sim_rack(Player player, String type) {
@@ -104,6 +114,7 @@ public class TPC {
 
   public void simulate_TPC() {
     System.out.println("Three Point Contest Simulation");
+    printContestants();
     System.out.println("-------------------------");
     System.out.println("Simulating First Round");
     System.out.println("-------------------------");

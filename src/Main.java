@@ -6,9 +6,9 @@ public class Main {
   public static void main(String[] args) {
 
       List<Player> contestants_TPC = new ArrayList<>();
+      inputContestants(contestants_TPC, 6, "3 Point Contest");
       List<Player> contestants_DC = new ArrayList<>();
-
-      inputContestants(contestants_TPC, contestants_DC);
+      inputContestants(contestants_DC, 4, "Dunk Contest");
 
       ThreePointContest TPC = new ThreePointContest(contestants_TPC);
       DunkContest DC = new DunkContest(contestants_DC);
@@ -17,30 +17,32 @@ public class Main {
       ASW.sim_weekend();
   }
 
-  private static void inputContestants(List<Player> contestants_TPC, List<Player> contestants_DC){
-      Scanner in = new Scanner(System.in);
-      String input;
+    private static void inputContestants(List<Player> contestants, int numberOfContestants, String contestName) {
+        Scanner in = new Scanner(System.in);
+        String input;
+        Player current;
 
-      System.out.println("Select SIX 3 Point Contest Competitors: (Leave line BLANK for a Random Player)");
-      while(contestants_TPC.size() < 6){
-          input = in.nextLine();
-          if(input.equals("")) contestants_TPC.add(PlayerList.getRandomPlayer());
-          else if (PlayerList.playerMap.get(input) == null){
-              System.out.println("Invalid Player: please enter again");
-          } else {
-              contestants_TPC.add(PlayerList.playerMap.get(input));
-          }
-      }
+        System.out.println("Select " + numberOfContestants + " " + contestName + " Competitors: (Leave line BLANK for a Random Player)");
 
-    System.out.println("Select FOUR Dunk Contest Competitors: (Leave line BLANK for a Random Player)");
-      while(contestants_DC.size() < 4){
-          input = in.nextLine();
-          if(input.equals("")) contestants_DC.add(PlayerList.getRandomPlayer());
-          else if (PlayerList.playerMap.get(input) == null){
-              System.out.println("Invalid Player: please enter again");
-          } else {
-              contestants_DC.add(PlayerList.playerMap.get(input));
-          }
-      }
-  }
+        while (contestants.size() < numberOfContestants) {
+            input = in.nextLine();
+
+            if (input.equals("")) {
+                current = PlayerList.getRandomPlayer();
+                while (contestants.contains(current)) {
+                    current = PlayerList.getRandomPlayer();
+                }
+                contestants.add(current);
+            } else {
+                Player selectedPlayer = PlayerList.playerMap.get(input);
+                if (selectedPlayer == null) {
+                    System.out.println("Invalid Player: please choose again");
+                } else if (contestants.contains(selectedPlayer)) {
+                    System.out.println("Duplicate Player: please choose again");
+                } else {
+                    contestants.add(selectedPlayer);
+                }
+            }
+        }
+    }
 }

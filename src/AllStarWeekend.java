@@ -2,11 +2,12 @@ public class AllStarWeekend {
 
   private final DunkContest dc;
   private final ThreePointContest tpc;
-  private final Player[] winners = new Player[2];
+  private Player[] winners;
 
   public AllStarWeekend(ThreePointContest tpc, DunkContest dc) {
     this.dc = dc;
     this.tpc = tpc;
+    winners = new Player[2];
   }
 
   private void congratulateWinners() {

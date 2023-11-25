@@ -48,12 +48,12 @@ public class ThreePointContest {
   private void sim_turn(Player player, int num_racks) {
     System.out.println(player);
 
-    int MB_rack = (int) (Math.random() * 4 + 1);
-    for (int i = 0; i < num_racks; i++) {
+    int MB_rack = (int) (Math.random() * (num_racks - 1) + 1);
+    for (int i = 1; i <= num_racks; i++) {
       if (i == MB_rack) sim_rack(player, "Money Ball");
       else sim_rack(player, "Regular");
 
-      if (i == 1 || i == 3) shotTypes.get("Mountain Dew").takeShot(player);
+      if (i == 2 || i == 4) shotTypes.get("Mountain Dew").takeShot(player);
       System.out.println();
     }
     System.out.println(player.getScore() + "\n");

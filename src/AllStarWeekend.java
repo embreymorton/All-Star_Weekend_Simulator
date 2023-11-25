@@ -20,11 +20,11 @@ public class AllStarWeekend {
   public void sim_weekend() {
     System.out.println("\n-------------------------");
     System.out.println("Welcome to All-Star Saturday Night!");
-    System.out.println();
+    System.out.println("-------------------------");
     tpc.simulate_TPC();
-    System.out.println();
+    System.out.println("\n-------------------------");
     dc.simulate_DC();
-    System.out.println();
+    System.out.println("\n-------------------------");
     System.out.println("That concludes our All-Star Events.");
     congratulateWinners();
   }

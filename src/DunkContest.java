@@ -14,16 +14,18 @@ public class DunkContest {
     // Can make these lists of dunk_types eventually
     dunkTypes = new HashMap<>();
     dunkTypes.put(0, Dunk.basic);
-    dunkTypes.put(1, Dunk.safety);
+    dunkTypes.put(1, Dunk.athletic);
     dunkTypes.put(2, Dunk.pro);
     dunkTypes.put(3, Dunk.elite);
     dunkTypes.put(4, Dunk.legendary);
   }
 
-  private void printContestants() {
-    System.out.print("Contestants: ");
+  private void printContestants(int round) {
+    if (round == 1) System.out.print("Contestants: ");
+    else System.out.print("Advancing: ");
     for (Player p : contestants) {
       System.out.print(p);
+      if (round == 2) System.out.print("(" + p.getScore() + ")");
       if (contestants.indexOf(p) != contestants.size() - 1) System.out.print(" -- ");
     }
     System.out.println();
@@ -33,9 +35,10 @@ public class DunkContest {
     return winner;
   }
 
-  private void resetScores() {
+  private void resetScores(Boolean start) {
     for (Player p : contestants) {
-      p.setScore(0);
+      if(start) p.resetScore();
+      else p.setScore(0);
     }
   }
 
@@ -63,7 +66,8 @@ public class DunkContest {
   }
 
   private void sim_round(int round) {
-    resetScores();
+    if(round == 1) resetScores(true);
+    else resetScores(false);
 
     for (int i = 1; i <= 2; i++) {
       if (i == 1) System.out.println("--Dunk One--\n");
@@ -80,15 +84,24 @@ public class DunkContest {
 
   public void simulate_DC() {
     System.out.println("Dunk Contest Simulation");
-    printContestants();
+    printContestants(1);
     System.out.println("-------------------------");
     System.out.println("Simulating First Round");
     System.out.println("-------------------------");
     sim_round(1);
     System.out.println("-------------------------");
     System.out.println("Simulating Second Round");
+    printContestants(2);
     System.out.println("-------------------------");
     sim_round(2);
-    System.out.println("Dunk Contest Winner: " + winner);
+    System.out.println(
+        "-- Dunk Contest Winner: "
+            + winner
+            + "("
+            + winner.getScore()
+            + ")"
+            + "("
+            + winner.getTotalScore()
+            + ") --");
   }
 }

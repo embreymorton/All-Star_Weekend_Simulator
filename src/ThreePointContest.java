@@ -15,18 +15,26 @@ public class ThreePointContest {
     shotTypes.put("Mountain Dew", Shot.mountainDew);
   }
 
-  private void printContestants() {
-    System.out.print("Contestants: ");
-    for(Player p : contestants){
+  private void printContestants(int round) {
+    if (round == 1) System.out.print("Contestants: ");
+    else System.out.print("Advancing: ");
+    for (Player p : contestants) {
       System.out.print(p);
-      if(contestants.indexOf(p) != contestants.size() - 1)
-        System.out.print(" -- ");
+      if (round == 2) System.out.print("(" + p.getScore() + ")");
+      if (contestants.indexOf(p) != contestants.size() - 1) System.out.print(" -- ");
     }
     System.out.println();
   }
 
-  public Player getWinner(){
+  public Player getWinner() {
     return winner;
+  }
+
+  private void resetScores(Boolean start) {
+    for (Player p : contestants) {
+      if(start) p.resetScore();
+      else p.setScore(0);
+    }
   }
 
   private void sim_rack(Player player, String type) {
@@ -39,7 +47,6 @@ public class ThreePointContest {
 
   private void sim_turn(Player player, int num_racks) {
     System.out.println(player);
-    player.setScore(0);
 
     int MB_rack = (int) (Math.random() * 4 + 1);
     for (int i = 0; i < num_racks; i++) {
@@ -53,6 +60,7 @@ public class ThreePointContest {
   }
 
   private void first_round() {
+    resetScores(true);
     for (Player p : contestants) {
       sim_turn(p, 5);
     }
@@ -66,6 +74,7 @@ public class ThreePointContest {
   }
 
   private void second_round() {
+    resetScores(false);
     for (Player p : contestants) {
       sim_turn(p, 5);
     }
@@ -81,6 +90,12 @@ public class ThreePointContest {
   }
 
   private Player tie_breaker(Player p1, Player p2) {
+    Map<Player, Integer> original_scores = new HashMap<>();
+    original_scores.put(p1, p1.getScore());
+    original_scores.put(p2, p2.getScore());
+
+    p1.setScore(0);
+    p2.setScore(0);
     System.out.println("-------------------------");
     System.out.println("Simulating Tie-Breaker Between " + p1 + " and " + p2);
     System.out.println("-------------------------");
@@ -91,12 +106,27 @@ public class ThreePointContest {
     PlayerComparator c = new PlayerComparator();
     int result = c.compare(p1, p2);
 
-    if (result == -1) return p1;
-    else if (result == 1) return p2;
+    if (result == -1){
+      p1.setScore(original_scores.get(p1));
+      return p1;
+    }
+    else if (result == 1) {
+      p2.setScore(original_scores.get(p2));
+      return p2;
+    }
     else return tie_breaker(p1, p2);
   }
 
   private List<Player> tie_breaker(Player p1, Player p2, Player p3) {
+    Map<Player, Integer> original_scores = new HashMap<>();
+    original_scores.put(p1, p1.getScore());
+    original_scores.put(p2, p2.getScore());
+    original_scores.put(p3, p3.getScore());
+
+    p1.setScore(0);
+    p2.setScore(0);
+    p3.setScore(0);
+
     System.out.println("-------------------------");
     System.out.println("Simulating Tie-Breaker Between" + p1 + ", " + p2 + " and " + p3);
     System.out.println("-------------------------");
@@ -108,20 +138,35 @@ public class ThreePointContest {
     List<Player> result = c.compare(p1, p2, p3);
 
     if (result == null) return tie_breaker(p1, p2, p3);
-    else return result;
+    else {
+      for(Player p : result){
+        p.setScore(original_scores.get(p));
+      }
+      return result;
+    }
   }
 
   public void simulate_TPC() {
+
     System.out.println("Three Point Contest Simulation");
-    printContestants();
+    printContestants(1);
     System.out.println("-------------------------");
     System.out.println("Simulating First Round");
     System.out.println("-------------------------");
     first_round();
     System.out.println("-------------------------");
     System.out.println("Simulating Second Round");
+    printContestants(2);
     System.out.println("-------------------------");
     second_round();
-    System.out.println("3 Point Contest Winner: " + winner);
+    System.out.println(
+        "-- 3 Point Contest Winner: "
+            + winner
+            + "("
+            + winner.getScore()
+            + ")"
+            + "("
+            + winner.getTotalScore()
+            + ") --");
   }
 }

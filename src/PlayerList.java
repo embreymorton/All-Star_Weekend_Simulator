@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class PlayerList {
 
-  //Eventually could store player attributes in separate file
+  // Eventually could store player attributes in separate file
 
   public static Map<String, Player> playerMap;
 
@@ -27,7 +27,7 @@ public class PlayerList {
     // CURRENT PLAYERS - DUNKERS
     playerMap.put("Mac McClung", new Player("Mac McClung", 60, 102));
     playerMap.put("Aaron Gordon", new Player("Aaron Gordon", 60, 100));
-    playerMap.put("Zion Williamson", new Player("Zion Williamson", 60, 99));
+    playerMap.put("Zion Williamson", new Player("Zion Williamson", 60, 100));
     playerMap.put("Ja Morant", new Player("Ja Morant", 70, 97));
     playerMap.put("Derrick Jones Jr.", new Player("Derrick Jones Jr.", 60, 96));
     playerMap.put("Kai Jones", new Player("Kai Jones", 50, 95));
@@ -65,7 +65,7 @@ public class PlayerList {
     playerMap.put("Ray Allen", new Player("Ray Allen", 100, 85));
   }
 
-  public static Player getRandomPlayer(){
+  public static Player getRandomPlayer() {
     Random random = new Random();
     Object[] keys = playerMap.keySet().toArray();
     return playerMap.get(keys[random.nextInt(keys.length)]);

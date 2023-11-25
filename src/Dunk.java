@@ -3,9 +3,10 @@ import java.util.Random;
 public class Dunk {
 
   public static final Dunk legendary = new Dunk("Legendary", 120, 50);
-  public static final Dunk elite = new Dunk("Elite", 200, 45);
+  public static final Dunk elite = new Dunk("Elite", 100, 45);
   public static final Dunk pro = new Dunk("Pro", 80, 40);
-  public static final Dunk basic = new Dunk("Basic", 60, 35);
+  public static final Dunk safety = new Dunk("Safety", 60, 35);
+  public static final Dunk basic = new Dunk("Basic", 25, 30);
 
   private String name;
   private int difficulty;
@@ -31,7 +32,7 @@ public class Dunk {
     RNG = random.nextInt(7) - 3;
     randomized_points = base_points + RNG;
     randomized_points = Math.min(50, randomized_points);
-    randomized_points = Math.max(35, randomized_points);
+    randomized_points = Math.max(30, randomized_points);
 
     return randomized_points - attempt;
   }
@@ -40,63 +41,5 @@ public class Dunk {
     return name;
   }
 
-  //  private String name;
-  //  private int difficulty;
-  //  private int dunkScore;
-  //  Random random = new Random();
-  //  int randNum;
-  //  int ranDunk;
-  //
-  //  public enum DunkType {
-  //    SAFETY,
-  //    PRO,
-  //    ELITE,
-  //    LEGENDARY
-  //  }
-  //
-  //  private DunkType type;
-  //
-  //  public Dunk(String n, int d, int s, DunkType t) {
-  //    name = n;
-  //    difficulty = d;
-  //    dunkScore = s;
-  //    type = t;
-  //  }
-  //
-  //  public String getName() {
-  //    return name;
-  //  }
-  //
-  //  public int getDifficulty() {
-  //    return difficulty;
-  //  }
-  //
-  //  public int getDunkScore(int attempt) {
-  //    randNum = random.nextInt(10) - 5;
-  //    ranDunk = dunkScore + randNum;
-  //    if (ranDunk > 50) {
-  //      ranDunk = 50;
-  //    }
-  //    if (ranDunk < 35) {
-  //      ranDunk = 35;
-  //    }
-  //
-  //    switch (type) {
-  //      case LEGENDARY:
-  //        if (attempt == 1) return 50;
-  //        else return ranDunk;
-  //      case ELITE:
-  //        if (attempt == 1) return ranDunk;
-  //        else if (attempt == 2) return ranDunk - 1;
-  //        else return ranDunk - 2;
-  //      case PRO:
-  //        if (attempt == 1) return ranDunk;
-  //        else if (attempt == 2) return ranDunk - 2;
-  //        else return ranDunk - 4;
-  //      case SAFETY:
-  //        return ranDunk;
-  //      default:
-  //        return 30;
-  //    }
-  //  }
+
 }

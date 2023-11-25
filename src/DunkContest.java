@@ -14,9 +14,10 @@ public class DunkContest {
         // Can make these lists of dunk_types eventually
         dunkTypes = new HashMap<>();
         dunkTypes.put(0, Dunk.basic);
-        dunkTypes.put(1, Dunk.pro);
-        dunkTypes.put(2, Dunk.elite);
-        dunkTypes.put(3, Dunk.legendary);
+        dunkTypes.put(1, Dunk.safety);
+        dunkTypes.put(2, Dunk.pro);
+        dunkTypes.put(3, Dunk.elite);
+        dunkTypes.put(4, Dunk.legendary);
     }
 
     private void printContestants() {

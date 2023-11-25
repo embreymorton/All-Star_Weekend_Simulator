@@ -15,7 +15,6 @@ public class Main {
       AllStarWeekend ASW = new AllStarWeekend(TPC, DC);
 
       ASW.sim_weekend();
-
   }
 
   private static void inputContestants(List<Player> contestants_TPC, List<Player> contestants_DC){
